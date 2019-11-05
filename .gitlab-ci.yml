@@ -3,6 +3,10 @@ image: docker:latest
 services:
   - docker:stable-dind-rootless
 
+stages:
+  - build
+  - push
+
 variables:
   DOCKER_HOST: tcp://docker:2378/
   DOCKER_DRIVER: overlay2
@@ -10,13 +14,13 @@ variables:
 before_script:
   - echo -n $CI_REGISTRY_PASSWORD | docker login -u "$CI_REGISTRY_USER" --password-stdin $CI_REGISTRY
 
-build:
+Build image:
   stage: build
   script:
     - docker pull $CI_REGISTRY_IMAGE:latest || true
     - docker build --cache-from $CI_REGISTRY_IMAGE:latest --tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA --tag $CI_REGISTRY_IMAGE:latest .
 
-upload:
+Upload:
   stage: push
   script:
     - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
