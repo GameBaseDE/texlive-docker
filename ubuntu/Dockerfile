@@ -1,4 +1,4 @@
-FROM ubuntu:rolling
+FROM ubuntu:eoan
 LABEL maintainer="ngehrsitz"
 ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install -y \
@@ -10,7 +10,6 @@ RUN apt-get update && apt-get install -y \
     biber \
     python-pygments gnuplot \
     openjdk-11-jre-headless
-
 WORKDIR /texbuild
 RUN adduser --disabled-password --gecos '' texbuilder
 RUN chown texbuilder:texbuilder /texbuild
