@@ -1,30 +1,19 @@
-image: docker:19.03.1
+image: docker:19.03.4
 
 services:
-  - docker:19.03.1-dind
+  - docker:19.03.4-dind
 stages:
-  - login
   - build
   - push
 variables:
   DOCKER_TLS_CERTDIR: ""
-
-before_script:
-  - echo $CI_REGISTRY_USER
-  - echo $CI_REGISTRY
-
-test:
-  stage: login
-  tags:
-    - GameBase
-  script:
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
 
 Build image:
   stage: build
   tags:
     - GameBase
   script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker pull $CI_REGISTRY_IMAGE:latest || true
     - docker build --cache-from $CI_REGISTRY_IMAGE:latest --tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA --tag $CI_REGISTRY_IMAGE:latest ubuntu
 
