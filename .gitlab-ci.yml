@@ -4,19 +4,25 @@ services:
   - docker:19.03.1-dind
 
 stages:
+  - test
   - build
   - push
 
 variables:
   DOCKER_HOST: tcp://localhost:2376
-  DOCKER_TLS_CERTDIR: "/certs"
+  DOCKER_TLS_CERTDIR: ""
 
 before_script:
   - echo $CI_REGISTRY_USER
   - echo $CI_REGISTRY
-  - netstat -tulpn
-  - docker info
-  - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+
+test:
+  stage: test
+  tags:
+    - GameBase
+  script:
+    - docker info
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
 
 Build image:
   stage: build
