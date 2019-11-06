@@ -16,6 +16,8 @@ before_script:
 
 build:
   stage: build
+  tags:
+    - GameBase
   script:
     - docker-compose down
     - docker-compose build
