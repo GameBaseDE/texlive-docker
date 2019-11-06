@@ -1,0 +1,9 @@
+version: "3"
+services:
+
+  texlive:
+    image: "$DOCKER_IMAGE_NAME:$IMAGE_VERSION_TAG"
+    build: ubuntu
+    tmpfs: /texbuild
+    cache_from:
+      "$DOCKER_IMAGE_NAME:latest"

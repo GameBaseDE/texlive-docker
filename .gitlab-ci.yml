@@ -1,7 +1,5 @@
-image: docker:19.03.4
+image: docker/compose:1.24.1
 
-services:
-  - docker:19.03.4-dind
 stages:
   - build
 
@@ -17,8 +15,9 @@ Build image:
   stage: build
   tags:
     - GameBase
+  variables:
+    IMAGE_VERSION_TAG: $CI_COMMIT_SHA
   script:
-    - docker pull $DOCKER_IMAGE_NAME:latest || true
-    - docker build --cache-from $DOCKER_IMAGE_NAME:latest --tag $DOCKER_IMAGE_NAME:$CI_COMMIT_SHA --tag $DOCKER_IMAGE_NAME:latest ubuntu
-    - docker push $DOCKER_IMAGE_NAME:$CI_COMMIT_SHA
-    - docker push $DOCKER_IMAGE_NAME:latest
+    - docker pull $DOCKER_IMAGE_NAME:$IMAGE_VERSION_TAG || true
+    - docker-compose build
+    - docker-compose push
