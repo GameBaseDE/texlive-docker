@@ -9,12 +9,14 @@ variables:
   DOCKER_TLS_CERTDIR: ""
   DOCKER_IMAGE_NAME: $CI_REGISTRY/$CI_REGISTRY_IMAGE
 
+before_script:
+  - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+
 Build image:
   stage: build
   tags:
     - GameBase
   script:
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker pull $CI_REGISTRY_IMAGE:latest || true
     - docker build --cache-from $DOCKER_IMAGE_NAME:latest --tag $DOCKER_IMAGE_NAME:$CI_COMMIT_SHA --tag $DOCKER_IMAGE_NAME:latest ubuntu
 
