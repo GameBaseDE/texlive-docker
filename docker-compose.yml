@@ -1,9 +1,10 @@
-version: "3"
+version: "3.4"
 services:
 
   texlive:
-    image: "$DOCKER_IMAGE_NAME:$IMAGE_VERSION_TAG"
-    build: ubuntu
+    image: "$DOCKER_IMAGE_NAME:$CI_COMMIT_SHA"
+    build:
+      context: ubuntu
+      cache_from:
+        - "$DOCKER_IMAGE_NAME:latest"
     tmpfs: /texbuild
-    cache_from:
-      "$DOCKER_IMAGE_NAME:latest"
