@@ -1,5 +1,5 @@
 variables:
-  DOCKER_HOST: tcp://docker:2375/
+  DOCKER_HOST: tcp://localhost:2375/
   DOCKER_DRIVER: overlay2
 
 # Official docker compose image.
@@ -19,5 +19,4 @@ build:
   tags:
     - GameBase
   script:
-    - docker-compose down
     - docker-compose build
