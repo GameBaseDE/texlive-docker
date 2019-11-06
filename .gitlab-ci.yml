@@ -1,3 +1,8 @@
+variables:
+  DOCKER_HOST: tcp://docker:2375/
+  DOCKER_DRIVER: overlay2
+
+# Official docker compose image.
 image:
   name: docker/compose:1.24.1
   entrypoint: ["/bin/sh", "-c"]
@@ -5,24 +10,12 @@ image:
 services:
   - docker:dind
 
-stages:
-  - build
-
-variables:
-  DOCKER_DRIVER: overlay2
-  DOCKER_HOST: tcp://docker:2375
-  DOCKER_IMAGE_NAME: $CI_REGISTRY/$CI_REGISTRY_IMAGE
-
 before_script:
-  - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  - docker version
+  - docker-compose version
 
-Build image:
+build:
   stage: build
-  tags:
-    - GameBase
-  variables:
-    IMAGE_VERSION_TAG: $CI_COMMIT_SHA
   script:
-    - docker pull $DOCKER_IMAGE_NAME:$IMAGE_VERSION_TAG || true
+    - docker-compose down
     - docker-compose build
-    - docker-compose push
