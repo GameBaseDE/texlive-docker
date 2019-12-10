@@ -8,9 +8,6 @@ variables:
   DOCKER_TLS_CERTDIR: ""
   DOCKER_IMAGE_NAME: $CI_REGISTRY/$CI_REGISTRY_IMAGE
 
-before_script:
-  - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-
 Build image:
   stage: build
   tags:
